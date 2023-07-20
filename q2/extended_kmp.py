@@ -110,8 +110,8 @@ def read_file(filename):
 
 #create a file of specified filename
 #write the output of the computation into a file
-def write_file(filename):
-    f = open(filename, 'w')
+def write_file(output):
+    f = open("output_kmp.txt", 'w')
     f.write(output[0])
 
     for i in range(1, len(output)):
@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     #print(text)
     #print(pat)
-    
+
     text_1 = "aabcaabxaay"
     #print(z_algo(text_1))  #z_algo testing
 
