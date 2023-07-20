@@ -1,8 +1,11 @@
+import sys
+
 #boyermoore algorithm in the opposite direction
 #scanning from left to right 
 #iteration starts from the most right instead of the most left
-def opposite_boyermoore(s):
-    pass
+def opposite_boyermoore(text, pat):
+    output = []
+    return output
 
 #z_algorithm main iteration
 #need to modify to be able to use wild card
@@ -118,5 +121,15 @@ def write_file(output):
     f.close()
 
 if __name__ == '__main__':
-    pass
+    text_file_name = sys.argv[1]
+    pat_file_name = sys.argv[2]
 
+    text = read_file(text_file_name)
+    pat = read_file(pat_file_name)
+
+    print(text)
+    print(pat)
+
+    """ output = opposite_boyermoore(text, pat)
+
+    write_file(output) """
