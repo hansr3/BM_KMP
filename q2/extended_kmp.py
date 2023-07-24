@@ -1,12 +1,37 @@
 import sys
+ALPHABET_SIZE = 26
+START_ALPHABET = 97
 
 def extended_kmp(txt, pat):
-    pass
+    output = []
 
-#SP_i computation for KMP
+    if len(txt) <= 0 or len(pat) <= 0 or len(txt) < len(pat):
+        return output
+    else:
+        pass
+
+#SP_i(x) computation for KMP
+#current implementation: regular sp_i
+#implementation of SP_i(x) computation might be correct but see later first
+#wait for what arun say about how does SP_i(x) work and whats the difference between regualr SP_i(email)
 def compute_sp_i(s):
-    pass
+    z = z_algo(s)
+    m = len(s)
 
+    #a 2d-list of alphabet_size x len(pat)
+    sp = [[0 for _ in range(ALPHABET_SIZE)] for _ in range(m)] #-> use this later for spi(X)
+    #sp_i = [0 for _ in range(m)]
+
+    #print("z:",z) #-> debugging purposes only for z algorithm
+    for j in range(m-1, 0, -1):
+        i = j + z[j] - 1
+
+        #s[z[j]+1] = pat[SPi(x) + 1] = x
+        #print(z[j])
+        #print(ord(s[z[j]+1].lower()))
+        sp[i][ord(s[z[j]].lower()) - START_ALPHABET] = z[j]
+
+    return sp
 #z_algorithm main iteration
 #need to modify to be able to use wild card
 def z_algo(s):
@@ -131,6 +156,8 @@ if __name__ == "__main__":
     #print(pat)
 
     text_1 = "aabcaabxaay"
+    text_2 = "bbccaebbcabd"
+    print("spi:",compute_sp_i(text_2))
     #print(z_algo(text_1))  #z_algo testing
 
 
