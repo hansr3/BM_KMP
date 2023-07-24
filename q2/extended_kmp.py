@@ -8,7 +8,34 @@ def extended_kmp(txt, pat):
     if len(txt) <= 0 or len(pat) <= 0 or len(txt) < len(pat):
         return output
     else:
-        pass
+        
+        #main KMP iteration starts here
+        m = len(pat)
+        n = len(txt)
+        last_pat_txt_index = m - 1
+        sp = compute_sp_i(pat)
+        j = 0
+        while last_pat_txt_index < n:
+            i = 0
+            j_iter = 0
+            while txt[j_iter] == pat[i]:
+                j_iter += 1
+                i += 1
+            
+            #if no missmatch (i.e. pattern occurance found)
+            if i == m - 1:
+                #append starting of index of occurence based on txt index to output
+                #shift by m-SP_i(x)
+                pass
+            
+            #if missmatch is found between pattern and region of text at position i
+            else:
+                #shift by i - SP_i(x)
+                pass
+        
+        return output
+
+
 
 #SP_i(x) computation for KMP
 #current implementation: regular sp_i
