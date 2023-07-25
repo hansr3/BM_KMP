@@ -10,28 +10,38 @@ def extended_kmp(txt, pat):
     else:
         
         #main KMP iteration starts here
+
+        #pat and txt len
         m = len(pat)
         n = len(txt)
+
+        #The last index of pat being compared to j+i-1
         last_pat_txt_index = m - 1
+
+        #sp values
         sp = compute_sp_i(pat)
+
+        #starting region comparison for txt
         j = 0
+
         while last_pat_txt_index < n:
             i = 0
-            j_iter = 0
+            j_iter = j
             while txt[j_iter] == pat[i]:
                 j_iter += 1
                 i += 1
             
             #if no missmatch (i.e. pattern occurance found)
-            if i == m - 1:
+            if i == m:
                 #append starting of index of occurence based on txt index to output
                 #shift by m-SP_i(x)
-                pass
+                output.append(j + 1)
+                j = j + m - sp[m-1]     #go back here ltr
             
             #if missmatch is found between pattern and region of text at position i
             else:
                 #shift by i - SP_i(x)
-                pass
+                j = j + i - sp[i][ord(pat[i+1])-START_ALPHABET]
         
         return output
 
@@ -46,7 +56,8 @@ def compute_sp_i(s):
     m = len(s)
 
     #a 2d-list of alphabet_size x len(pat)
-    sp = [[0 for _ in range(ALPHABET_SIZE)] for _ in range(m)] #-> use this later for spi(X)
+    sp = [[0 for _ in range(ALPHABET_SIZE)] for _ in range(m-1)] #-> use this later for spi(X)
+    sp.append(0)
     #sp_i = [0 for _ in range(m)]
 
     #print("z:",z) #-> debugging purposes only for z algorithm
@@ -56,7 +67,14 @@ def compute_sp_i(s):
         #s[z[j]+1] = pat[SPi(x) + 1] = x
         #print(z[j])
         #print(ord(s[z[j]+1].lower()))
-        sp[i][ord(s[z[j]].lower()) - START_ALPHABET] = z[j]
+
+        #if it's SP_m
+        if i == m - 1:
+            sp[i] = z[j]
+
+        #else SP_i
+        else:
+            sp[i][ord(s[z[j]].lower()) - START_ALPHABET] = z[j]
 
     return sp
 #z_algorithm main iteration
@@ -173,22 +191,22 @@ def write_file(output):
     f.close()
 
 if __name__ == "__main__":
-    """ text_file_name = sys.argv[1]
+    text_file_name = sys.argv[1]
     pat_file_name = sys.argv[2]
 
     text = read_file(text_file_name)
-    pat = read_file(pat_file_name) """
+    pat = read_file(pat_file_name)
 
     #print(text)
     #print(pat)
 
-    text_1 = "aabcaabxaay"
-    text_2 = "bbccaebbcabd"
-    print("spi:",compute_sp_i(text_2))
+    #text_1 = "aabcaabxaay"
+    #text_2 = "bbccaebbcabd"
+    #print("spi:",compute_sp_i(text_2))
     #print(z_algo(text_1))  #z_algo testing
 
 
-    """ output = extended_kmp(text, pat)
+    output = extended_kmp(text, pat)
 
-    write_file(output) """
+    write_file(output)
 
