@@ -15,37 +15,46 @@ def extended_kmp(txt, pat):
         m = len(pat)
         n = len(txt)
 
-        #The last index of pat being compared to j+i-1
-        last_pat_txt_index = m - 1
+        """ #The last index of pat being compared to j+i-1
+        last_pat_txt_index = m - 1 """
 
         #sp values
         sp = compute_sp_i(pat)
 
         #starting region comparison for txt
         j = 0
-
-        while last_pat_txt_index < n:
-            i = 0
-            j_iter = j
-            while i < m and txt[j_iter] == pat[i]:
-                j_iter += 1
+        i = 0
+        while j < n: #last_pat_txt_index < n
+            #i = 0
+            #j_iter = j
+            while i < m and txt[j] == pat[i]: #txt[j_iter] == pat[i]:
+                #j_iter += 1
+                j += 1
                 i += 1
-            
+
             #if no missmatch (i.e. pattern occurance found)
             if i == m:
                 #append starting of index of occurence based on txt index to output
                 #shift by m-SP_i(x)
-                output.append(j + 1)
-                j = j + m - sp[m-1]     #go back here ltr
-                
-            
+                output.append(j-m)
+                #j = j + m - sp[m-1]     #go back here ltr
+                j += 1
+                i = m - sp[-1]
+
             #if missmatch is found between pattern and region of text at position i
             else:
                 #shift by i - SP_i(x)
-                j = j + i - sp[i][ord(txt[j+m])-START_ALPHABET]
-            
+                if i == 0:      #(if i <= 0 then no choice but to compare the next char in txt)
+                    i = 0
+                    j = j + 1
+                else:
+                    #j = j + i - sp[i][ord(txt[j+m])-START_ALPHABET]
+                    #NOT SURE ABOUT THIS GO BACK HERE AGAIN LTR
+                    i = i - sp[i][ord(txt[j+1])-START_ALPHABET] + 1 # +2 because +1 is x (the missmatched character with y in pat but matches x in txt)
+                                                                    #+2 passed x
+
             # the new j + m - 1
-            last_pat_txt_index = j + m - 1
+            #last_pat_txt_index = j + m - 1
         return output
 
 
@@ -211,7 +220,10 @@ if __name__ == "__main__":
 
     text = "abcdabcdabcd"
     pat = "abc"
-    output = extended_kmp(text, pat)
+    s1 = "aaabaabaaaaacaabbaaabaaaabaabaaaaba"
+    s2 = "aabaaaabaab"
+    output = extended_kmp(s1, s2)
 
-    write_file(output)
+    print(output)
+    #write_file(output)
 
