@@ -19,7 +19,7 @@ def extended_kmp(txt, pat):
         last_pat_txt_index = m - 1 """
 
         #sp values
-        sp = compute_sp_i(pat)
+        sp = compute_sp_i_x(pat)
 
         #starting region comparison for txt
         j = 0
@@ -27,6 +27,7 @@ def extended_kmp(txt, pat):
         while j < n: #last_pat_txt_index < n
             #i = 0
             #j_iter = j
+            print(sp)
             while i < m and txt[j] == pat[i]: #txt[j_iter] == pat[i]:
                 #j_iter += 1
                 j += 1
@@ -39,19 +40,19 @@ def extended_kmp(txt, pat):
                 output.append(j-m)
                 #j = j + m - sp[m-1]     #go back here ltr
                 j += 1
-                i = m - sp[-1]
+                i = i - (m - sp[-1])
 
             #if missmatch is found between pattern and region of text at position i
             else:
                 #shift by i - SP_i(x)
                 if i == 0:      #(if i <= 0 then no choice but to compare the next char in txt)
                     i = 0
-                    j = j + 1
+                    j += 1
                 else:
                     #j = j + i - sp[i][ord(txt[j+m])-START_ALPHABET]
                     #NOT SURE ABOUT THIS GO BACK HERE AGAIN LTR
-                    i = i - sp[i][ord(txt[j+1])-START_ALPHABET] + 1 # +2 because +1 is x (the missmatched character with y in pat but matches x in txt)
-                                                                    #+2 passed x
+                    i = i - (i - sp[i-1][ord(txt[j+1])-START_ALPHABET])   # +2 because +1 is x (the missmatched character with y in pat but matches x in txt)
+                    j += 1                                                      #+2 passed x
 
             # the new j + m - 1
             #last_pat_txt_index = j + m - 1
@@ -63,30 +64,59 @@ def extended_kmp(txt, pat):
 #current implementation: regular sp_i
 #implementation of SP_i(x) computation might be correct but see later first
 #wait for what arun say about how does SP_i(x) work and whats the difference between regualr SP_i(email)
-def compute_sp_i(s):
-    z = z_algo(s)
-    m = len(s)
+def compute_sp_i_x(p):
+    z = z_algo(p)
+    m = len(p)
 
     #a 2d-list of alphabet_size x len(pat)
-    sp = [[0 for _ in range(ALPHABET_SIZE)] for _ in range(m-1)] #-> use this later for spi(X)
-    sp.append(0)
+    sp_i_x = [[0 for _ in range(ALPHABET_SIZE)] for _ in range(m-1)] #-> use this later for spi(X)
+    sp_i_x.append(0)
+    sp = compute_SP_i(p)
     #sp_i = [0 for _ in range(m)]
 
     #print("z:",z) #-> debugging purposes only for z algorithm
+    for i in range(len(sp_i_x)):
+        for j in range(len(sp_i_x[0])):
+
+            #if it's SP_m
+            if i == m - 1:
+                sp_i_x[i] = sp[i]
+
+            #else SP_i
+            else:
+                #sp_i_x[i][ord(p[z[i]].lower()) - START_ALPHABET] = z[i]
+                # if the SP[i][x] + 1 == x 
+                if p[sp[i] + 1] == chr(j + START_ALPHABET):
+                    new_val = sp[i] + 1
+                    sp_i_x[i][j] = sp[i] + 1
+                    #print(sp_i_x)
+                # if not
+                else:
+                    # if sp_i is 0
+                    if sp[i] == 0:
+                        sp_i_x[i][j] = 0
+                    # if not 0 but not x
+                    else:
+                        #set the SPi(x) value to be SPi-1(x)
+                        # this is so that it will be shifted towards
+                        # the longest proper suffix that matches its prefix with a char x
+                        # from that point
+                        sp_i_x[i][j] = sp_i_x[i-1][j]
+
+
+    return sp_i_x
+
+#function that computes the regular sp_i
+def compute_SP_i(s):
+    z = z_algo(s)
+    m = len(s)
+
+    #SPI array declaration
+    sp = [0 for _ in range(m)]
+
     for j in range(m-1, 0, -1):
         i = j + z[j] - 1
-
-        #s[z[j]+1] = pat[SPi(x) + 1] = x
-        #print(z[j])
-        #print(ord(s[z[j]+1].lower()))
-
-        #if it's SP_m
-        if i == m - 1:
-            sp[i] = z[j]
-
-        #else SP_i
-        else:
-            sp[i][ord(s[z[j]].lower()) - START_ALPHABET] = z[j]
+        sp[i] = z[j]
 
     return sp
 #z_algorithm main iteration
@@ -213,15 +243,18 @@ if __name__ == "__main__":
     #print(pat)
 
     #text_1 = "aabcaabxaay"
-    #text_2 = "bbccaebbcabd"
-    #print("spi:",compute_sp_i(text_2))
-    #print(z_algo(text_1))  #z_algo testing
-
-
+    text_2 = "bbccaebbcabd"
     text = "abcdabcdabcd"
     pat = "abc"
     s1 = "aaabaabaaaaacaabbaaabaaaabaabaaaaba"
     s2 = "aabaaaabaab"
+    #print("spi:",compute_sp_i(text_2))
+    #print(compute_SP_i(s2))
+    #print(z_algo(text_1))  #z_algo testing
+    #print(compute_sp_i_x(text_2))
+
+    
+    
     output = extended_kmp(s1, s2)
 
     print(output)
