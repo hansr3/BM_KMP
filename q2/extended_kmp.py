@@ -25,12 +25,8 @@ def extended_kmp(txt, pat):
         j = 0
         i = 0
         while j < n: #last_pat_txt_index < n
-            #i = 0
-            #j_iter = j
-            #print(sp)
-            print(j)
+            
             while i < m and j < n and txt[j] == pat[i]: #txt[j_iter] == pat[i]:
-                #j_iter += 1
                 j += 1
                 i += 1
 
@@ -42,8 +38,6 @@ def extended_kmp(txt, pat):
                 #append starting of index of occurence based on txt index to output
                 #shift by m-SP_i(x)
                 output.append(j-m)
-                #j = j + m - sp[m-1]     #go back here ltr
-                #j += 1
                 i = i - (m - sp[-1])
 
             #if missmatch is found between pattern and region of text at position i
@@ -55,9 +49,7 @@ def extended_kmp(txt, pat):
                     i = 0
                     j += 1
                 else:
-                    #j = j + i - sp[i][ord(txt[j+m])-START_ALPHABET]
-                    #NOT SURE ABOUT THIS GO BACK HERE AGAIN LTR
-                    i = i - (i - sp[i-1][ord(txt[j+1])-START_ALPHABET])   # +2 because +1 is x (the missmatched character with y in pat but matches x in txt)
+                    i = i - (i - sp[i-1][ord(txt[j+1])-START_ALPHABET])         # +2 because +1 is x (the missmatched character with y in pat but matches x in txt)
                     j += 1                                                      #+2 passed x
 
             # the new j + m - 1
@@ -78,9 +70,8 @@ def compute_sp_i_x(p):
     sp_i_x = [[0 for _ in range(ALPHABET_SIZE)] for _ in range(m-1)] #-> use this later for spi(X)
     sp_i_x.append(0)
     sp = compute_SP_i(p)
-    #sp_i = [0 for _ in range(m)]
 
-    #print("z:",z) #-> debugging purposes only for z algorithm
+    
     for i in range(len(sp_i_x)):
         for j in range(len(sp_i_x[0])):
 
@@ -90,12 +81,11 @@ def compute_sp_i_x(p):
 
             #else SP_i
             else:
-                #sp_i_x[i][ord(p[z[i]].lower()) - START_ALPHABET] = z[i]
                 # if the SP[i][x] + 1 == x 
                 if p[sp[i] + 1] == chr(j + START_ALPHABET):
                     new_val = sp[i] + 1
                     sp_i_x[i][j] = sp[i] + 1
-                    #print(sp_i_x)
+                    
                 # if not
                 else:
                     # if sp_i is 0
