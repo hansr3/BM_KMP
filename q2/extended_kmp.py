@@ -48,8 +48,10 @@ def extended_kmp(txt, pat):
 
             #if missmatch is found between pattern and region of text at position i
             else:
+                if j >= n:
+                    break
                 #shift by i - SP_i(x)
-                if i == 0:      #(if i <= 0 then no choice but to compare the next char in txt)
+                elif i == 0:      #(if i <= 0 then no choice but to compare the next char in txt)
                     i = 0
                     j += 1
                 else:
@@ -228,41 +230,23 @@ def read_file(filename):
 #write the output of the computation into a file
 def write_file(output):
     f = open("output_kmp.txt", 'w')
-    f.write(output[0])
+    f.write(str(output[0] + 1))
 
     for i in range(1, len(output)):
         f.write("\n")
-        f.write(output[i])
+        f.write(str(output[i] + 1))
 
     f.close()
 
 if __name__ == "__main__":
-    """ text_file_name = sys.argv[1]
+    text_file_name = sys.argv[1]
     pat_file_name = sys.argv[2]
 
     text = read_file(text_file_name)
-    pat = read_file(pat_file_name) """
-
-    #print(text)
-    #print(pat)
-
-    #text_1 = "aabcaabxaay"
-    text_2 = "bbccaebbcabd"
-    text = "abcdabcdabcd"
-    pat = "abc"
-    s1 = "aaabaabaaaaacaabbaaabaaaabaabaaaaba"
-    s2 = "aabaaaabaab"
-    T = "abxababxab"
-    P = "abxab"
-    #print("spi:",compute_sp_i(text_2))
-    #print(compute_SP_i(s2))
-    #print(z_algo(text_1))  #z_algo testing
-    #print(compute_sp_i_x(text_2))
+    pat = read_file(pat_file_name)
 
     
-    
-    output = extended_kmp(s1, s2)
+    output = extended_kmp(text.lower(), pat.lower())
 
-    print(output)
-    #write_file(output)
+    write_file(output)
 
