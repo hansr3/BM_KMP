@@ -27,11 +27,15 @@ def extended_kmp(txt, pat):
         while j < n: #last_pat_txt_index < n
             #i = 0
             #j_iter = j
-            print(sp)
-            while i < m and txt[j] == pat[i]: #txt[j_iter] == pat[i]:
+            #print(sp)
+            print(j)
+            while i < m and j < n and txt[j] == pat[i]: #txt[j_iter] == pat[i]:
                 #j_iter += 1
                 j += 1
                 i += 1
+
+            """ if j >= n:
+                break """
 
             #if no missmatch (i.e. pattern occurance found)
             if i == m:
@@ -39,7 +43,7 @@ def extended_kmp(txt, pat):
                 #shift by m-SP_i(x)
                 output.append(j-m)
                 #j = j + m - sp[m-1]     #go back here ltr
-                j += 1
+                #j += 1
                 i = i - (m - sp[-1])
 
             #if missmatch is found between pattern and region of text at position i
@@ -248,6 +252,8 @@ if __name__ == "__main__":
     pat = "abc"
     s1 = "aaabaabaaaaacaabbaaabaaaabaabaaaaba"
     s2 = "aabaaaabaab"
+    T = "abxababxab"
+    P = "abxab"
     #print("spi:",compute_sp_i(text_2))
     #print(compute_SP_i(s2))
     #print(z_algo(text_1))  #z_algo testing
