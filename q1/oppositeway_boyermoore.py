@@ -68,28 +68,29 @@ def oppositeway_boyermoore(txt, pat):
 #function to compute Rk(x) value
 #need to modify to be able to use wildcard
 def compute_R(pat):
+    m = len(pat)
     R = [[-1 for _ in range(NUM_ALPHABET)] for _ in range(len(pat))]
 
-    for i in range(1, len(pat)):
+    for i in range(m-2 , -1, -1):
         
         # if iteration is at index 1
-        if i == 1:
+        if i == m - 2:
 
-            # # store index of the rightmost occurence of a char into R-list
-            # occurence of char i - 1 of current iteration
-            R[i][ord(pat[i - 1]) - STARTING_ASCII] = i - 1
+            # # store index of the leftmost occurence of a char into R-list
+            # occurence of char i + 1 of current iteration
+            R[i][ord(pat[i + 1]) - STARTING_ASCII] = i + 1
         # any other iteration
         else:
             # Copy the value of 
             for j in range(NUM_ALPHABET):
 
                 #Copy when value index is available
-                if R[i-1][j] > -1:
-                    R[i][j] = R[i-1][j]
+                if R[i+1][j] > -1:
+                    R[i][j] = R[i+1][j]
 
             # store index of the rightmost occurence of a char into R-list
             # occurence of char i - 1 of current iteration
-            R[i][ord(pat[i-1]) - STARTING_ASCII] = i - 1
+            R[i][ord(pat[i+1]) - STARTING_ASCII] = i + 1
 
 
     return R
@@ -286,13 +287,15 @@ if __name__ == '__main__':
 
     txt, pat = read_input(textFileName), read_input(patFileName) """
 
-    txt = "abcdabcdabcd"
+    """ txt = "abcdabcdabcd"
     pat = "abc"
-    output = q2(txt, pat)
+    output = q2(txt, pat) """
 
+    pat_1 = "tbapxab"
+    #print(compute_R(pat_1)) #test compute R
     #print(output)
 
-    write_output(output)
+    """ write_output(output) """
 
 
 
