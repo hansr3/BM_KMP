@@ -30,7 +30,7 @@ def oppositeway_boyermoore(txt, pat):
     R = compute_R(pat)  #(DONE)
 
     #compute z_suffix 
-    z_suffix = compute_z_suffix(pat) #(DONE)
+    z_suffix = compute_backward_z_suffix(pat) #(DONE)
 
     #compute good_suffix
     good_suffix = compute_good_suffix(pat)   #(DONE)
@@ -113,28 +113,29 @@ def compute_matched_prefix(pat):
 
 #function to compute z_suffix
 #the backward version of this should be z_values
-def compute_z_suffix(pat):
-    #inv_pat = ""
-    #inv_z = None
-    #z_suffix = []
-    #for i in range(len(pat) - 1, -1, -1):
-        #inv_pat += pat[i]
+def compute_backward_z_suffix(pat):
+    inv_pat = ""
+    inv_z = None
+    z_suffix = []
+    for i in range(len(pat) - 1, -1, -1):
+        inv_pat += pat[i]
 
-    #inv_z = z_algo(inv_pat)
+    inv_z = z_algo(inv_pat)
 
-    #for i in range(len(inv_z) - 1, -1, -1):
-        #z_suffix.append(inv_z[i])
+    for i in range(len(inv_z) - 1, -1, -1):
+        z_suffix.append(inv_z[i])
     
-    return z_algo(pat)#z_suffix
+    return z_suffix
 
 #function to compute good_suffix
 def compute_good_suffix(pat):
-    z_suffix = compute_z_suffix(pat)
+    z_suffix = z_algo(pat)#compute_backward_z_suffix(pat)
     m = len(pat)
     g_sfx = [0 for _ in range(m+1)]
 
-    for p in range(m-1):
-        j = m - z_suffix[p]
+    print(z_suffix)
+    for p in range(m-1, 0, -1):
+        j = z_suffix[p] - 1
         g_sfx[j] = p
 
     return g_sfx
@@ -293,7 +294,10 @@ if __name__ == '__main__':
     output = q2(txt, pat) """
 
     pat_1 = "tbapxab"
+    pat_2 = "acababacaba"
+
     #print(compute_R(pat_1)) #test compute R
+    print(compute_good_suffix(pat_2))
     #print(output)
 
     """ write_output(output) """
