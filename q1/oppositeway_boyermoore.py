@@ -273,11 +273,11 @@ def read_input(fileName):
 #function to write into a txt file of given text_file_name
 #output = .txt file
 def write_output(output):
-    f = open('output_q2.txt','w')
-    f.write(str(output[0]))
+    f = open('output_oppositeway_boyermoore.txt','w')
+    f.write(str(output[0] + 1))
     for i in range(1, len(output)):
         f.write("\n")
-        f.write(str(output[i]))
+        f.write(str(output[i] + 1))
     f.close()
 
 if __name__ == '__main__':
@@ -290,9 +290,9 @@ if __name__ == '__main__':
     pat = "abc"
     output = q2(txt, pat)
 
-    print(output)
+    #print(output)
 
-    """ write_output(output) """
+    write_output(output)
 
 
 
