@@ -112,19 +112,20 @@ def compute_matched_prefix(pat):
     return m_prefix
 
 #function to compute z_suffix
+#the backward version of this should be z_values
 def compute_z_suffix(pat):
-    inv_pat = ""
-    inv_z = None
-    z_suffix = []
-    for i in range(len(pat) - 1, -1, -1):
-        inv_pat += pat[i]
+    #inv_pat = ""
+    #inv_z = None
+    #z_suffix = []
+    #for i in range(len(pat) - 1, -1, -1):
+        #inv_pat += pat[i]
 
-    inv_z = z_algo(inv_pat)
+    #inv_z = z_algo(inv_pat)
 
-    for i in range(len(inv_z) - 1, -1, -1):
-        z_suffix.append(inv_z[i])
+    #for i in range(len(inv_z) - 1, -1, -1):
+        #z_suffix.append(inv_z[i])
     
-    return z_suffix
+    return z_algo(pat)#z_suffix
 
 #function to compute good_suffix
 def compute_good_suffix(pat):
