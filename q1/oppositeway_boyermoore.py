@@ -101,20 +101,23 @@ def compute_matched_suffix(pat):
     m = len(pat)
     m_prefix = [0 for _ in range(len(pat) + 1)]
 
+    #z_suffix = compute_backward_z_suffix(pat)
     z_suffix = compute_backward_z_suffix(pat)
-    m_prefix[-1] = len(pat)
-    print(z_suffix)
-    #for i in range(len(pat) - 1, 0, -1):
-        #if z[i]+i == len(pat):
-            #m_prefix[i] = z[i]  #found a new largest suffix that matches its prefix
-        #else:
-            #m_prefix[i] = m_prefix[i+1] #otherwise, previously found value is copied
+    
+    #print(z_suffix)
+    """ for i in range(len(pat) - 1, 0, -1):
+        if z[i]+i == len(pat):
+            m_prefix[i] = z[i]  #found a new largest suffix that matches its prefix
+        else:
+            m_prefix[i] = m_prefix[i+1] #otherwise, previously found value is copied """
     
     for i in range(m-1):
         if i - z_suffix[i] == -1:
             m_prefix[i] = z_suffix[i]   #found a new largest prefix that matches its suffix 
         else:
             m_prefix[i] = m_prefix[i-1] #otherwise, previously found value is copied
+    #print(m_prefix)
+    m_prefix[-2] = len(pat)
     return m_prefix
 
 #function to compute z_suffix
@@ -155,7 +158,7 @@ def bad_char_shift(x, k, R):
         if R[k][ord(x)-STARTING_ASCII] == -1:
             return 1
         else:
-            return k - R[k][ord(x)-STARTING_ASCII]    
+            return abs(k - R[k][ord(x)-STARTING_ASCII])    
 
 
 
@@ -164,15 +167,15 @@ def good_suffix_shift(g_sffx, m_pref, k, m):
     
     #case 1a
     if g_sffx[k+1] > 0:
-        return False, m - g_sffx[k+1]
+        return False, abs(0 - g_sffx[k+1])#False, m - g_sffx[k+1]
 
     #case 1b
     elif g_sffx[k+1] == -1:
-        return False, m - m_pref[k+1]
+        return False, abs(0 - m_pref[k+1])#False, m - m_pref[k+1]
 
     #case 2 (when the whole substring matches with the pattern)
     elif k < 0:
-        return True, m - m_pref[1]
+        return True, abs(0 - m_pref[-3])#True, m - m_pref[1]
     
     #return 0 shift if no cases match
     else:
