@@ -12,12 +12,12 @@ def q2(txt, pat):
 def oppositeway_boyermoore(txt, pat):
     m = len(pat)
     n = len(txt)
-    i = m - 1
-    pat_i = m - 1
+    i = n - m
+    pat_i = 0
     z = [0 for _ in range(m)]
     R = None
     z_suffix = None
-    matched_prefix = None
+    matched_suffix = None
     good_suffix = None
     to_shift = 0
     occurence = []
@@ -36,32 +36,36 @@ def oppositeway_boyermoore(txt, pat):
     good_suffix = compute_good_suffix(pat)   #(DONE)
 
     #compute matched_prefix
-    matched_prefix = compute_matched_suffix(pat) #(DONE)
+    matched_suffix = compute_matched_suffix(pat) #(DONE)
 
 
     #main iteration of boyer_moore
-    while i < n:
+    while i > -1:
 
         text_i = i
         k = pat_i
-        j = text_i - (m - 1)    #starting substring region in txt
-        while pat_i > -1 and txt[text_i] == pat[pat_i]:
-            text_i -= 1
-            pat_i -= 1
+        j = text_i + m - 1 #text_i - (m - 1)    #starting substring region in txt
+        while pat_i < m and txt[text_i] == pat[pat_i]:
+            text_i += 1
+            pat_i += 1
             k = pat_i
         
         
-        x = txt[j + k]
-        b_shift = bad_char_shift(x, k, R)
-        matched, g_shift = good_suffix_shift(good_suffix, matched_prefix,k, m)
-
+        print(i)
+        x = txt[j - k]
+        if k < m:
+            b_shift = bad_char_shift(x, k, R)
+            matched, g_shift = good_suffix_shift(good_suffix, matched_suffix,k, m)
+        else:
+            g_shift = abs(0 - matched_suffix[-3])
+            matched = True
         to_shift = max(b_shift, g_shift)
 
         if matched:
             occurence.append(j)
 
-        i += to_shift - 1
-        pat_i = m - 1
+        i -= to_shift #remove + 1 myb if got bug
+        pat_i = 0
 
     return occurence
 
@@ -174,7 +178,7 @@ def good_suffix_shift(g_sffx, m_pref, k, m):
         return False, abs(0 - m_pref[k+1])#False, m - m_pref[k+1]
 
     #case 2 (when the whole substring matches with the pattern)
-    elif k < 0:
+    elif k >= m:
         return True, abs(0 - m_pref[-3])#True, m - m_pref[1]
     
     #return 0 shift if no cases match
@@ -298,17 +302,17 @@ if __name__ == '__main__':
 
     txt, pat = read_input(textFileName), read_input(patFileName) """
 
-    """ txt = "abcdabcdabcd"
+    txt = "abcdabcdabcd"
     pat = "abc"
-    output = q2(txt, pat) """
+    output = q2(txt, pat)
 
     pat_1 = "tbapxab"
     pat_2 = "acababacaba"
 
     #print(compute_R(pat_1)) #test compute R
     #print(compute_good_suffix(pat_2))
-    print(compute_matched_suffix(pat_2))
-    #print(output)
+    #print(compute_matched_suffix(pat_2))
+    print(output)
 
     """ write_output(output) """
 
