@@ -8,7 +8,7 @@ def q2(txt, pat):
     
     return oppositeway_boyermoore(txt, pat)
 
-#allows a char "." which matches with any string in the 26 alphabet 
+#string comparison is done from left to right and shift leftward
 def oppositeway_boyermoore(txt, pat):
     m = len(pat)
     n = len(txt)

@@ -5,6 +5,9 @@ START_ALPHABET = 97
 def extended_kmp(txt, pat):
     output = []
 
+    #if one of txt or pat is empty
+    #if txt is longer than pat
+    #return immediately
     if len(txt) <= 0 or len(pat) <= 0 or len(txt) < len(pat):
         return output
     else:
