@@ -51,7 +51,7 @@ def oppositeway_boyermoore(txt, pat):
             k = pat_i
         
         
-        print(i)
+        
         x = txt[j - k]
         if k < m:
             b_shift = bad_char_shift(x, k, R)
@@ -62,7 +62,7 @@ def oppositeway_boyermoore(txt, pat):
         to_shift = max(b_shift, g_shift)
 
         if matched:
-            occurence.append(j)
+            occurence.insert(0 ,j - m + 1)
 
         i -= to_shift #remove + 1 myb if got bug
         pat_i = 0
