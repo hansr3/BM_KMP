@@ -52,10 +52,12 @@ def oppositeway_boyermoore(txt, pat):
         
         
         
-        x = txt[j - k]
-        if k < m:
+        x = txt[j - k]  #find the missmatched char from text
+        if k < m:   #if there is a missmatch char
             b_shift = bad_char_shift(x, k, R)
             matched, g_shift = good_suffix_shift(good_suffix, matched_suffix,k, m)
+        
+        #if all char in pat matched char in txt
         else:
             g_shift = abs(0 - matched_suffix[-3])
             matched = True
@@ -108,7 +110,7 @@ def compute_matched_suffix(pat):
     #z_suffix = compute_backward_z_suffix(pat)
     z_suffix = compute_backward_z_suffix(pat)
     
-    #print(z_suffix)
+    
     """ for i in range(len(pat) - 1, 0, -1):
         if z[i]+i == len(pat):
             m_prefix[i] = z[i]  #found a new largest suffix that matches its prefix
@@ -120,7 +122,7 @@ def compute_matched_suffix(pat):
             m_prefix[i] = z_suffix[i]   #found a new largest prefix that matches its suffix 
         else:
             m_prefix[i] = m_prefix[i-1] #otherwise, previously found value is copied
-    #print(m_prefix)
+    
     m_prefix[-2] = len(pat)
     return m_prefix
 
@@ -146,7 +148,7 @@ def compute_good_suffix(pat):
     m = len(pat)
     g_sfx = [0 for _ in range(m+1)]
 
-    print(z_values)
+    
     for p in range(m-1, 0, -1):
         j = z_values[p] - 1
         g_sfx[j] = p
@@ -298,23 +300,13 @@ def write_output(output):
 
 if __name__ == '__main__':
 
-    """ textFileName, patFileName = sys.argv[1], sys.argv[2]
+    textFileName, patFileName = sys.argv[1], sys.argv[2]
 
-    txt, pat = read_input(textFileName), read_input(patFileName) """
+    txt, pat = read_input(textFileName), read_input(patFileName)
 
-    txt = "abcdabcdabcd"
-    pat = "abc"
     output = q2(txt, pat)
 
-    pat_1 = "tbapxab"
-    pat_2 = "acababacaba"
-
-    #print(compute_R(pat_1)) #test compute R
-    #print(compute_good_suffix(pat_2))
-    #print(compute_matched_suffix(pat_2))
-    print(output)
-
-    """ write_output(output) """
+    write_output(output)
 
 
 
